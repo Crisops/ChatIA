@@ -1,0 +1,52 @@
+.message {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 16px;
+}
+
+
+.message span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.message p {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.message.user {
+    color: #fff;
+    align-items: end;
+
+    & span {
+        background-color: #29b0ff;
+        font-size: 12px;
+    }
+
+    & p {
+       
+        background-color: #0ea4fc;
+    }
+
+}
+
+.message.gpt {
+    color: #a5a5a5;
+    align-items: start;
+
+    & span {
+        background-color: #303030;
+    }
+
+    & p {
+        background-color: #202020;
+    }
+
+}
