@@ -9,6 +9,8 @@ const InformationProgressIA = () => {
     const [progressIA, setProgressIA] = useState("");
     const [erroProgress, setErrorProgress] = useState(null);
 
+    const {setLoadingPorgressIA} = useMessageStore(state => state)
+
     const SELECT_MODEL = "gemma-2b-it-q4f16_1-MLC-1k"
     // const SELECT_MODEL = "Phi-3-mini-4k-instruct-q4f16_1-MLC"
     
@@ -21,7 +23,8 @@ const InformationProgressIA = () => {
         try {
             await CreateMLCEngine(SELECT_MODEL, {
                 initProgressCallback: (info) => {
-                    const {text} = info
+                    const {progress, text} = info
+                    if(progress) setLoadingPorgressIA(progress)
                 setProgressIA(text)
                 }
             })
