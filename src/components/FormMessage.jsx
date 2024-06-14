@@ -8,11 +8,6 @@ const FormMessage = () => {
   const {isLoading, messageForm, messages, setIsLoading, setMessageForm, setSendMessage} = useMessageStore(state => state)
 
   
-
-
-  // console.log(engineIA);
-
-  
   const handleChangeSendMessage = (event) => {
 
     const { value } = event.target
