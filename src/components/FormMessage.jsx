@@ -5,15 +5,16 @@ import { useMessageStore } from './store/MessageStore'
 const FormMessage = () => {
 
 
-  const {isLoading, messageForm, messages, setIsLoading, setMessageForm, setSendMessage} = useMessageStore(state => state)
+  const {loadingProgressIA, messageForm, messages, setMessageForm, setSendMessage} = useMessageStore(state => state)
 
-  
+  const buttonClass = loadingProgressIA ? "complete" : "loading"
+
+
   const handleChangeSendMessage = (event) => {
 
     const { value } = event.target
     setMessageForm(value)
   }
-
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -30,7 +31,7 @@ const FormMessage = () => {
   return (
     <form onSubmit={handleSubmit}>
         <input onChange={handleChangeSendMessage} placeholder="Escribe tu mensaje aquí..." value={messageForm} />
-        <button>Enviar</button>
+        <button className={buttonClass}>Enviar</button>
     </form>
   )
 }
