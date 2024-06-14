@@ -9,6 +9,6 @@ export const useMessageStore = create((set) => ({
   setIsLoading: (isLoading) => set({ isLoading }),
   setMessageForm: (messageForm) => set({ messageForm }),
   setProgressIA: (progressIA) => set({ progressIA }),
-  setSendMessage: (messages) => set({ messages }),
+  setSendMessage: (updateFunction) => set((state) => ({ messages: updateFunction(state.messages) })),
   setLoadingPorgressIA: (loadingProgressIA) => set({loadingProgressIA})
 }))
