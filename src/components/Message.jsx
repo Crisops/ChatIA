@@ -2,12 +2,12 @@ import './css/Message.css'
 
 function Message({type, message}) {
 
-    const send = type === "gpt" ? "IA" : "Tú"
+    const whoSend = type === "gpt" ? "IA" : "Tú"
 
 
   return (
     <li className={`message ${type}`}>
-        <span>{send}</span>
+        <span>{whoSend}</span>
         <p>{message}</p>
   </li>
   )
