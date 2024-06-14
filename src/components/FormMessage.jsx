@@ -23,7 +23,7 @@ const FormMessage = () => {
 
       const newMessage = { type: 'user', messageText: messageForm }
     
-    setSendMessage([...messages, newMessage]) 
+    setSendMessage(prevMessages => [...prevMessages, newMessage]) 
     setMessageForm("")
   }
     
