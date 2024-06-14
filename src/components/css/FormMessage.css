@@ -25,4 +25,13 @@ form button {
         background-color: #08a2fc;
     }
 
+    &.loading {
+        pointer-events: none;
+        background-color: #434343;
+    }
+
+    &.complete {
+        background-color: #29b0ff;
+    }
+
 }
