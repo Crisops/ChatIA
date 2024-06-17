@@ -5,9 +5,9 @@ import { useMessageStore } from './store/MessageStore'
 const FormMessage = () => {
 
 
-  const {loadingProgressIA, messageForm, messages, setMessageForm, setSendMessage} = useMessageStore(state => state)
+  const {isLoading, setIsLoading, loadingProgressIA, messageForm, messages, setMessageForm, setSendMessage} = useMessageStore(state => state)
 
-  const buttonClass = loadingProgressIA ? "complete" : "loading"
+  const buttonClass = loadingProgressIA && !isLoading ? "complete" : "loading"
 
 
   const handleChangeSendMessage = (event) => {
@@ -21,10 +21,11 @@ const FormMessage = () => {
 
     if(messageForm.trim() === "") return alert("El campo esta vacio")
 
-      const newMessage = { type: 'user', messageText: messageForm }
+      const newMessage = { role: 'user', content: messageForm }
     
     setSendMessage(prevMessages => [...prevMessages, newMessage]) 
     setMessageForm("")
+    setIsLoading(true)
   }
     
 
