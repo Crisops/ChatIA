@@ -7,11 +7,10 @@ import './css/InformationProgressIA.css'
 const InformationProgressIA = () => {
 
     const [progressIA, setProgressIA] = useState("");
-    const [erroProgress, setErrorProgress] = useState(null);
+    const [errorProgress, setErrorProgress] = useState("");
     const [engineMLC, setEngineMLC] = useState(null);
-    const [botMessages, setBotMessage] = useState([])
 
-    const {messages, loadingProgressIA, setLoadingPorgressIA} = useMessageStore(state => state)
+    const {isLoading, messages, setIsLoading, loadingProgressIA, setLoadingPorgressIA, setSendMessage} = useMessageStore(state => state)
 
     const SELECT_MODEL = "gemma-2b-it-q4f16_1-MLC-1k"
     // const SELECT_MODEL = "Phi-3-mini-4k-instruct-q4f16_1-MLC"
@@ -20,36 +19,51 @@ const InformationProgressIA = () => {
         loadingProgressIAEngine();
     }, [messages])
 
-
     const loadingProgressIAEngine = async () => {
         try {
             if(!engineMLC){
                 const engine = await CreateMLCEngine(SELECT_MODEL, {
                     initProgressCallback: (info) => {
                         const {progress, text} = info
-                        if(progress && !loadingProgressIA) setLoadingPorgressIA(progress)
+                        if(progress && !loadingProgressIA){
+                            setLoadingPorgressIA(progress)
+                            setIsLoading(false)
+                        } 
                         setProgressIA(text) 
                     }
                 })
                 setEngineMLC(engine)
             }
-            if(messages.length !== 0){
-                const historyMessage = [...messages]
-                const { messageText } = historyMessage.pop()
-                console.log(messageText);
-                const reply = await engineMLC.chat.completions.create({
-                    messages: [
-                        ...botMessages,
-                        {
-                            role: "user",
-                            content: messageText
-                        }
-                    ]
+
+            if(messages.length !== 0 && messages[messages.length - 1].role === "user"){
+                const chucks = await engineMLC.chat.completions.create({
+                    messages,
+                    stream: true
                 })
-                console.log(reply)
-                const [botMessage] = reply.choices
-                const {message} = botMessage
-                setBotMessage(prev => [...prev, message])
+                for await (const chuck of chucks) {
+                    const [botMessage]  = chuck.choices;
+                    const {delta} = botMessage
+                    setSendMessage(prevMessages => {
+                        const lastMessageIndex = prevMessages.length - 1;
+                        const lastMessage = prevMessages[lastMessageIndex];
+                        if (lastMessage.role === "assistant") {
+                            const updatedMessage = {
+                            ...lastMessage,
+                            content: lastMessage.content + (delta.content || '')
+                            };
+                            return [
+                                ...prevMessages.slice(0, lastMessageIndex),
+                                updatedMessage
+                            ];
+                        } else {
+                            return [
+                                ...prevMessages,
+                                { role: "assistant", content: delta.content || '' }
+                            ];
+                        }
+                    })
+                }
+                setIsLoading(false)
             }
         } catch (error) {
             const {message} = error
@@ -61,7 +75,7 @@ const InformationProgressIA = () => {
 
 
     return (
-        <small>{ erroProgress ? erroProgress : progressIA}</small>
+        <small>{ errorProgress ? errorProgress : progressIA}</small>
     )
 }
 
