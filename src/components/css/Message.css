@@ -26,27 +26,31 @@
     align-items: end;
 
     & span {
-        background-color: #29b0ff;
+        background-color: #0ea5fc6c;
+        border: 1px solid #29b1ff;
         font-size: 12px;
     }
 
     & p {
        
-        background-color: #0ea4fc;
+        background-color: #0ea5fc6c;
+        border: 1px solid #0ea5fc;
     }
 
 }
 
 .message.assistant {
-    color: #a5a5a5;
+    color: #fff;
     align-items: start;
 
     & span {
-        background-color: #303030;
+        background-color: #3030307f;
+        border: 1px solid #303030;
     }
 
     & p {
-        background-color: #202020;
+        background-color: #2020207a;
+        border: 1px solid #202020;
     }
 
 }
