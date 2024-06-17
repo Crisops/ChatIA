@@ -10,6 +10,11 @@ form input {
     color: #fff;
     padding: 12px 4px;
     flex-grow: 1;
+    transition: background-color 500ms;
+
+    &:disabled{
+        background-color: #1a1a1a86;
+    }
 }
 
 form button {
