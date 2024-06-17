@@ -10,8 +10,8 @@ function ContainerMessages() {
     <ul>
         {
         messages.length !== 0 &&
-        messages.map(({type, messageText}, index) => (
-          <Message key={index} type={type} message={messageText} />
+        messages.map(({role, content}, index) => (
+          <Message key={index} type={role} message={content} />
         ))}
     </ul>
   )
