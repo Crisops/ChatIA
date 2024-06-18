@@ -13,7 +13,12 @@ const FormMessage = () => {
   const inputRef = useRef()
 
   useEffect(() =>{
-    (isLoading) ? inputRef.current.setAttribute("disabled", "true") :  inputRef.current.removeAttribute("disabled")
+    if(isLoading){
+      inputRef.current.setAttribute("disabled", "true")
+    }else{
+      inputRef.current.removeAttribute("disabled")
+      inputRef.current.focus()
+    }
   },[isLoading])
 
   const handleChangeSendMessage = (event) => {
