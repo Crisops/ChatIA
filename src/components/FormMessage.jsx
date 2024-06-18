@@ -43,7 +43,7 @@ const FormMessage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-        <input ref={inputRef} onChange={handleChangeSendMessage} placeholder="Escribe tu mensaje aquí..." value={messageForm}  />
+        <input ref={inputRef} disabled onChange={handleChangeSendMessage} placeholder="Escribe tu mensaje aquí..." value={messageForm}  />
         <button className={loadingData}>Enviar</button>
     </form>
   )
