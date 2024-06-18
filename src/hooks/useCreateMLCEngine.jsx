@@ -1,6 +1,7 @@
-import { CreateMLCEngine } from "@mlc-ai/web-llm";
-import { useEffect, useState } from 'react'
+import { CreateWebWorkerMLCEngine  } from "@mlc-ai/web-llm";
+import { useState } from 'react'
 import { useMessageStore } from '../components/store/MessageStore';
+import { updateMessagesChatIA } from "../helpers/updateMessagesChatIA";
 
 
 
@@ -11,10 +12,12 @@ export const useCreateMLCEngine = () => {
     const [engineMLC, setEngineMLC] = useState(null)
     const [errorEngine, setErrorEngine] = useState([{ message: "" }])
 
-
     const getMLCEngine = async ({SELECT_MODEL}) => {
         try{
-            const engine = await CreateMLCEngine(SELECT_MODEL, {
+            const engine = await CreateWebWorkerMLCEngine(
+                new Worker(new URL('../workers/worker.js', import.meta.url), {type: "module"}),
+                SELECT_MODEL,
+                {
                 initProgressCallback: (info) => {
                     const {progress, text} = info
                     if(progress && !loadingProgressIA){
@@ -32,7 +35,6 @@ export const useCreateMLCEngine = () => {
 
     }
 
-
     const chatTimeRealIA = async () => {
         try {
             const chucks = await engineMLC.chat.completions.create({
@@ -42,25 +44,7 @@ export const useCreateMLCEngine = () => {
             for await (const chuck of chucks) {
                 const [botMessage]  = chuck.choices;
                 const {delta} = botMessage
-                setSendMessage(prevMessages => {
-                    const lastMessageIndex = prevMessages.length - 1;
-                    const lastMessage = prevMessages[lastMessageIndex];
-                    if (lastMessage.role === "assistant") {
-                        const updatedMessage = {
-                        ...lastMessage,
-                        content: lastMessage.content + (delta.content || '')
-                        };
-                        return [
-                            ...prevMessages.slice(0, lastMessageIndex),
-                            updatedMessage
-                        ];
-                    } else {
-                        return [
-                            ...prevMessages,
-                            { role: "assistant", content: delta.content || '' }
-                        ];
-                    }
-                })
+                setSendMessage(prevMessages => updateMessagesChatIA({prevMessages, delta}))
             }
             setIsLoading(false)
         } catch (error) {
@@ -69,8 +53,6 @@ export const useCreateMLCEngine = () => {
         }
 
     }
-
-
 
     return {engineMLC, messages, progressIA, errorEngine, getMLCEngine, chatTimeRealIA}
 
