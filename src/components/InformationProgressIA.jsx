@@ -6,7 +6,8 @@ import { useCreateMLCEngine } from "../hooks/useCreateMLCEngine";
 const InformationProgressIA = () => {
 
     const SELECT_MODEL = "gemma-2b-it-q4f16_1-MLC-1k"
-    // const SELECT_MODEL = "Phi-3-mini-4k-instruct-q4f16_1-MLC"
+    // const SELECT_MODEL = "Phi-3-mini-4k-instruct-q4f16_1-MLC" // "BEST" AI Model
+
     const {engineMLC, messages, progressIA, errorEngine, getMLCEngine, chatTimeRealIA} = useCreateMLCEngine()
 
     const [messageText] = errorEngine
