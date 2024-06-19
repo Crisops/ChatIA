@@ -2,11 +2,14 @@ import {useEffect, useRef} from 'react'
 import Message from "./Message"
 import { useMessageStore } from "./store/MessageStore"
 import './css/ContainerMessage.css'
+import Loader from './Loader'
 
 function ContainerMessages() {
 
-  const {messages} = useMessageStore(state => state)
+  const {messages, progressIA, errorEngine} = useMessageStore(state => state)
   const mainRef = useRef()
+
+  const {error} = errorEngine
 
   useEffect(() => {
 
@@ -17,6 +20,7 @@ function ContainerMessages() {
 
   return (
     <main ref={mainRef}>
+      {(error || progressIA !== "") && <Loader/>}
       <ul>
           {
           messages.length !== 0 &&
