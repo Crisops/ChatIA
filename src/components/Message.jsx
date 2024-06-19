@@ -2,7 +2,7 @@ import './css/Message.css'
 
 function Message({type, message}) {
 
-    const whoSend = type === "assistant" ? "IA" : "Tú"
+  const whoSend = type === "assistant" ? "IA" : "Tú"
 
   return (
     <li className={`message ${type}`}>
